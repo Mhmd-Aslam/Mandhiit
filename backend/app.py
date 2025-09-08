@@ -1,8 +1,26 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
+from flask_jwt_extended import JWTManager
+import os
+
+from auth import auth_bp, token_blocklist
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for React frontend
+
+# Basic config for JWT
+app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "dev-secret-change-me")
+app.config["JWT_SECRET_KEY"] = os.environ.get("JWT_SECRET_KEY", "dev-jwt-secret-change-me")
+
+jwt = JWTManager(app)
+
+@jwt.token_in_blocklist_loader
+def check_if_token_revoked(jwt_header, jwt_payload):
+    jti = jwt_payload.get("jti")
+    return jti in token_blocklist
+
+# Register auth blueprint
+app.register_blueprint(auth_bp, url_prefix="/auth")
 
 # Mock restaurant data
 restaurants = [
