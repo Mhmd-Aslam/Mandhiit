@@ -1,0 +1,63 @@
+# ---- OS / Editor ----
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# ---- Logs ----
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ---- Python / Flask ----
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Python tooling & cache
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+.eggs/
+*.egg-info/
+
+# Flask / environment files
+instance/
+.env
+.env.*
+.flaskenv
+
+# Build artifacts
+build/
+dist/
+
+# ---- Node / React (frontend) ----
+frontend/node_modules/
+frontend/.cache/
+frontend/.parcel-cache/
+frontend/.eslintcache
+frontend/coverage/
+frontend/build/
+
+# Common framework outputs (in case of future changes)
+.next/
+.nuxt/
+.svelte-kit/
+.out/
+
+# ---- Misc ----
+coverage/
+.cache/
+*.local
+*.tmp
+.tmp/

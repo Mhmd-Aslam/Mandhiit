@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom base styles */
+@layer base {
+  html, body, #root {
+    height: 100%;
+  }
+  body {
+    @apply bg-gray-50 text-slate-800 antialiased;
+  }
+}
+
+/* Reusable component classes */
+@layer components {
+  .container-app {
+    @apply max-w-6xl mx-auto px-4;
+  }
+  .btn-primary {
+    @apply inline-flex items-center gap-2 rounded-md bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 transition-colors;
+  }
+}
