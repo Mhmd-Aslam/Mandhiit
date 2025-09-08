@@ -32,7 +32,7 @@ const HomePage = () => {
         <div className="container-app py-16">
           <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight">Best Mandhi in Town</h1>
           <p className="mt-3 text-white/90 max-w-2xl">
-            Discover the finest mandhi and biryani spots around you. Curated lists, beautiful photos,
+            Discover the finest mandhi spots around you. Curated lists, beautiful photos,
             and delicious experiences await.
           </p>
         </div>
