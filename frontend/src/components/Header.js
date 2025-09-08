@@ -5,7 +5,7 @@ import api from '../services/api';
 import GoogleLoginButton from './GoogleLoginButton';
 
 const Header = () => {
-  const { user, logout, token } = useAuth();
+  const { user, logout, token, setUser, setToken } = useAuth();
 
   const onLogout = async () => {
     try {
@@ -33,11 +33,20 @@ const Header = () => {
             </li>
             {!user ? (
               <li>
-                <GoogleLoginButton onSuccess={() => { /* AuthContext will be set inside page components; header stays simple */ }} />
+                <GoogleLoginButton onSuccess={(u, tok) => { setUser(u); setToken(tok); }} />
               </li>
             ) : (
               <>
-                <li className="text-white/90 font-medium">Hi, {user.name || user.email}</li>
+                <li>
+                  <Link to="/profile" className="flex items-center gap-3 hover:text-white/90">
+                    <span className="hidden sm:inline text-white/90 font-medium">Hi, {user.name || user.email}</span>
+                    <img
+                      src={user.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name || user.email)}&background=f59e0b&color=fff&size=64&rounded=true`}
+                      alt="avatar"
+                      className="w-8 h-8 rounded-full ring-2 ring-white/40"
+                    />
+                  </Link>
+                </li>
                 <li>
                   <button onClick={onLogout} className="bg-white/15 hover:bg-white/25 text-white px-3 py-1.5 rounded-md transition">Logout</button>
                 </li>

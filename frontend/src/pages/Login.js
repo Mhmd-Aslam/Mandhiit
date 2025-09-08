@@ -46,7 +46,7 @@ export default function Login() {
               value={form.email}
               onChange={onChange}
               required
-              className="mt-1 w-full rounded-md border-slate-300 focus:border-amber-500 focus:ring-amber-500"
+              className="mt-1 input-base"
             />
           </div>
           <div>
@@ -57,7 +57,7 @@ export default function Login() {
               value={form.password}
               onChange={onChange}
               required
-              className="mt-1 w-full rounded-md border-slate-300 focus:border-amber-500 focus:ring-amber-500"
+              className="mt-1 input-base"
             />
           </div>
           <button

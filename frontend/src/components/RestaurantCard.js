@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 
 const RestaurantCard = ({ restaurant }) => {
   const navigate = useNavigate();
+  const avg = restaurant.avg_rating ?? restaurant.rating;
+  const count = restaurant.review_count ?? 0;
 
   const handleClick = () => {
     navigate(`/restaurant/${restaurant.id}`);
@@ -20,7 +22,7 @@ const RestaurantCard = ({ restaurant }) => {
           className="w-full h-48 object-cover"
         />
         <div className="absolute top-2 right-2 bg-black/70 text-white text-sm px-2 py-1 rounded-full">
-          ⭐ {restaurant.rating}
+          ⭐ {avg}{count ? ` (${count})` : ''}
         </div>
       </div>
       <div className="p-4">
