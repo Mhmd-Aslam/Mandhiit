@@ -97,7 +97,20 @@ const RestaurantDetail = () => {
                   )}
                 </p>
               </div>
-              <button onClick={() => navigate(-1)} className="btn-primary mt-6">Back to list</button>
+              <div className="mt-6 flex items-center gap-3">
+                {restaurant.location && (
+                  <a
+                    href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(`${restaurant.name}, ${restaurant.location}`)}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="btn-primary inline-flex items-center gap-2"
+                  >
+                    <img src="/maps.png" alt="Google Maps" className="w-4 h-4" />
+                    <span>Directions</span>
+                  </a>
+                )}
+                <button onClick={() => navigate(-1)} className="btn-primary">Back to list</button>
+              </div>
             </div>
           </div>
         </div>
