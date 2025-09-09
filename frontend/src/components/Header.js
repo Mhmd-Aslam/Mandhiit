@@ -3,9 +3,11 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 import GoogleLoginButton from './GoogleLoginButton';
+import { useTheme } from '../context/ThemeContext';
 
 const Header = () => {
   const { user, logout, token, setUser, setToken } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const [open, setOpen] = useState(false);
 
   const onLogout = async () => {
@@ -32,13 +34,25 @@ const Header = () => {
         <nav className="hidden md:block">
           <ul className="flex items-center gap-6">
             <li>
-              <Link to="/" className="font-medium px-2 py-2 rounded-md hover:bg-white/10 hover:text-white transition-colors">Home</Link>
+              <Link to="/" className="font-medium px-2 py-1 rounded-md hover:bg-white/10 hover:text-white transition-colors">Home</Link>
             </li>
             <li>
-              <Link to="/leaderboards" className="font-medium px-2 py-2 rounded-md hover:bg-white/10 hover:text-white transition-colors">Leaderboards</Link>
+              <Link to="/leaderboards" className="font-medium px-2 py-1 rounded-md hover:bg-white/10 hover:text-white transition-colors">Leaderboards</Link>
             </li>
             <li>
-              <Link to="/polls" className="font-medium px-2 py-2 rounded-md hover:bg-white/10 hover:text-white transition-colors">Polls</Link>
+              <Link to="/polls" className="font-medium px-2 py-1 rounded-md hover:bg-white/10 hover:text-white transition-colors">Polls</Link>
+            </li>
+            <li>
+              <button
+                type="button"
+                onClick={toggleTheme}
+                className="inline-flex items-center gap-2 px-2 py-1 rounded-md hover:bg-white/10 transition-colors"
+                aria-label="Toggle dark mode"
+                title="Toggle dark mode"
+              >
+                <span>{theme === 'dark' ? '🌙' : '☀️'}</span>
+                <span className="hidden lg:inline text-white/90 text-sm">{theme === 'dark' ? 'Dark' : 'Light'}</span>
+              </button>
             </li>
             {!user ? (
               <li>
@@ -94,6 +108,16 @@ const Header = () => {
               </li>
               <li>
                 <Link to="/polls" className="block py-1 font-medium rounded-md px-2 hover:bg-white/20 transition-colors text-xs" onClick={() => setOpen(false)}>Polls</Link>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  onClick={() => { toggleTheme(); }}
+                  className="w-full text-left py-1 rounded-md px-2 hover:bg-white/20 transition-colors text-xs inline-flex items-center gap-2"
+                >
+                  <span>{theme === 'dark' ? '🌙' : '☀️'}</span>
+                  <span>Toggle {theme === 'dark' ? 'Dark' : 'Light'} Mode</span>
+                </button>
               </li>
               {!user ? (
                 <li>

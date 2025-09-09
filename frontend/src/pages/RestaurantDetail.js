@@ -44,7 +44,7 @@ const RestaurantDetail = () => {
 
   if (loading) {
     return (
-      <div className="container-app py-16 text-center text-slate-600">Loading restaurant...</div>
+      <div className="container-app py-16 text-center text-slate-600 dark:text-white">Loading restaurant...</div>
     );
   }
 

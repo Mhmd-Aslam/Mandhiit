@@ -35,13 +35,13 @@ export default function Polls() {
         </div>
       </section>
       <section className="container-app py-10">
-        <div className="bg-white rounded-xl shadow p-6">
+        <div className="bg-white dark:bg-[#2f3031] rounded-xl shadow dark:shadow-none ring-1 ring-slate-200 dark:ring-[#555] p-6">
           <div className="flex items-start justify-between gap-4">
             <div>
-              <div className="text-xl font-bold text-slate-800">{SAMPLE_POLL.title}</div>
-              <div className="text-slate-500 text-sm mt-1">Ends in {SAMPLE_POLL.ends_in}</div>
+              <div className="text-xl font-bold text-slate-800 dark:text-white">{SAMPLE_POLL.title}</div>
+              <div className="text-slate-500 dark:text-gray-300 text-sm mt-1">Ends in {SAMPLE_POLL.ends_in}</div>
             </div>
-            <div className="text-xs text-slate-500">{totals.total} votes</div>
+            <div className="text-xs text-slate-500 dark:text-gray-300">{totals.total} votes</div>
           </div>
 
           <div className="mt-6 grid gap-3">
@@ -49,14 +49,14 @@ export default function Polls() {
               <button
                 key={opt.key}
                 onClick={() => setSelected(opt.key)}
-                className={`text-left p-3 rounded-lg border transition relative overflow-hidden ${selected === opt.key ? 'border-amber-300 bg-amber-50' : 'border-slate-200 hover:bg-slate-50'}`}
+                className={`text-left p-3 rounded-lg border transition relative overflow-hidden ${selected === opt.key ? 'border-amber-300 bg-amber-50 dark:border-amber-400 dark:bg-amber-500/15' : 'border-slate-200 hover:bg-slate-50 dark:border-[#555] dark:hover:bg-white/10'}`}
                 disabled={voted}
               >
                 <div className="flex items-center justify-between">
-                  <span className="font-medium text-slate-800">{opt.label}</span>
-                  <span className="text-sm text-slate-500">{totals.perc[opt.key] || 0}%</span>
+                  <span className="font-medium text-slate-800 dark:text-white">{opt.label}</span>
+                  <span className="text-sm text-slate-500 dark:text-gray-300">{totals.perc[opt.key] || 0}%</span>
                 </div>
-                <div className="mt-2 h-2 bg-slate-200 rounded-full">
+                <div className="mt-2 h-2 bg-slate-200 dark:bg-[#4a4b4c] rounded-full">
                   <div className="h-2 bg-amber-500 rounded-full" style={{ width: `${totals.perc[opt.key] || 0}%` }} />
                 </div>
               </button>
@@ -73,9 +73,9 @@ export default function Polls() {
                 Submit vote
               </button>
             ) : (
-              <div className="text-amber-700 text-sm font-medium">Thanks for voting! Results updated.</div>
+              <div className="text-amber-700 dark:text-amber-300 text-sm font-medium">Thanks for voting! Results updated.</div>
             )}
-            <div className="text-xs text-slate-500">Sample data for demo purposes</div>
+            <div className="text-xs text-slate-500 dark:text-gray-300">Sample data for demo purposes</div>
           </div>
 
           <div className="mt-6">

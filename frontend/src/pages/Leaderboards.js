@@ -54,7 +54,7 @@ export default function Leaderboards() {
         </div>
       </section>
       <section className="container-app py-10">
-        <div className="bg-white rounded-xl shadow p-6">
+        <div className="bg-white dark:bg-[#2f3031] rounded-xl shadow dark:shadow-none ring-1 ring-slate-200 dark:ring-[#555] p-6">
           <div className="flex flex-wrap items-center gap-3">
             <select className="input-base w-full sm:w-auto" value={city} onChange={(e) => setCity(e.target.value)}>
               <option value="all">All Cities</option>
@@ -80,28 +80,28 @@ export default function Leaderboards() {
 
           <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {list.map((r, idx) => (
-              <div key={r.id} className="group relative bg-white rounded-xl overflow-hidden shadow ring-1 ring-slate-200">
+              <div key={r.id} className="group relative bg-white dark:bg-[#2f3031] rounded-xl overflow-hidden shadow dark:shadow-none ring-1 ring-slate-200 dark:ring-[#555]">
                 <div className="absolute left-3 top-3 z-10"><Medal rank={idx + 1} /></div>
                 <img src={r.image} alt={r.name} className="w-full h-40 object-cover group-hover:scale-[1.01] transition" />
                 <div className="p-4">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-lg font-bold text-slate-800">{r.name}</h3>
-                    <span className="text-sm text-slate-500">{r.city}</span>
+                    <h3 className="text-lg font-bold text-slate-800 dark:text-white">{r.name}</h3>
+                    <span className="text-sm text-slate-500 dark:text-gray-300">{r.city}</span>
                   </div>
                   <div className="mt-1 text-amber-700 font-medium">{r.type} Mandhi</div>
                   <div className="mt-2 flex items-center gap-3 text-sm">
-                    <div className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-amber-50 text-amber-800">
+                    <div className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-amber-50 text-amber-800 dark:bg-amber-500/15 dark:text-amber-200 dark:ring-1 dark:ring-amber-400/40">
                       ⭐ {r.avg_rating.toFixed(1)}
                     </div>
-                    <div className="text-slate-500">{r.review_count} reviews</div>
-                    <div className="ml-auto text-slate-700 font-semibold">Score {r.score.toFixed(3)}</div>
+                    <div className="text-slate-500 dark:text-gray-300">{r.review_count} reviews</div>
+                    <div className="ml-auto text-slate-700 dark:text-white font-semibold">Score {r.score.toFixed(3)}</div>
                   </div>
                 </div>
               </div>
             ))}
           </div>
 
-          <div className="mt-6 flex items-center justify-between text-xs text-slate-500">
+          <div className="mt-6 flex items-center justify-between text-xs text-slate-500 dark:text-gray-300">
             <span>Sample data for demo purposes</span>
             <Link to="/" className="text-amber-600 hover:text-amber-700 font-medium">← Back to Home</Link>
           </div>

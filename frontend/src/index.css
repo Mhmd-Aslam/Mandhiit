@@ -8,8 +8,12 @@
     height: 100%;
   }
   body {
-    @apply bg-gray-50 text-slate-800 antialiased;
+    @apply bg-gray-50 text-slate-800 antialiased dark:text-gray-200;
   }
+  /* Precise dark background color */
+  html.dark body { background-color: #393a3b; color: #ffffff; }
+  /* Headings more prominent in dark */
+  html.dark h1, html.dark h2, html.dark h3, html.dark h4, html.dark h5, html.dark h6 { color: #ffffff; }
 }
 
 /* Reusable component classes */
@@ -27,6 +31,19 @@
   .textarea-base {
     @apply w-full rounded-md border border-slate-300 bg-white px-3 py-2.5 text-slate-800 placeholder-slate-400 focus:border-amber-500 focus:ring-amber-500;
   }
+  /* Precise dark component colors */
+  html.dark .input-base {
+    background-color: #2f3031; /* slightly darker than body */
+    border-color: #555; 
+    color: #ffffff;
+  }
+  html.dark .input-base::placeholder { color: #bfbfbf; }
+  html.dark .textarea-base {
+    background-color: #2f3031;
+    border-color: #555;
+    color: #ffffff;
+  }
+  html.dark .textarea-base::placeholder { color: #bfbfbf; }
 
   /* Small fade + scale animation for dropdown panels */
   @keyframes fadeScale {
@@ -37,4 +54,11 @@
     animation: fadeScale 130ms ease-out;
     transform-origin: top right;
   }
+  html.dark .dropdown-panel {
+    background-color: #2f3031;
+    border-color: #555;
+    color: #ffffff;
+  }
+  /* Ensure primary buttons stay white text in dark */
+  html.dark .btn-primary { color: #ffffff; }
 }

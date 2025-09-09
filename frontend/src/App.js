@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
 import LoadingScreen from './components/LoadingScreen';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -15,9 +16,10 @@ import Polls from './pages/Polls';
 function App() {
   return (
     <Router>
-      <AuthProvider>
-        <LoadingScreen />
-        <div className="min-h-screen flex flex-col">
+      <ThemeProvider>
+        <AuthProvider>
+          <LoadingScreen />
+          <div className="min-h-screen flex flex-col">
           <Header />
           <main className="flex-1">
             <Routes>
@@ -33,7 +35,8 @@ function App() {
           </main>
           <Footer />
         </div>
-      </AuthProvider>
+        </AuthProvider>
+      </ThemeProvider>
     </Router>
   );
 }

@@ -163,16 +163,16 @@ const HomePage = () => {
           <div className="flex items-center gap-3">
             <button
               type="button"
-              className="px-2.5 py-1.5 md:px-3 md:py-2 rounded-md border border-slate-300 text-slate-700 hover:bg-slate-50 text-sm md:text-base"
+              className="px-2.5 py-1.5 md:px-3 md:py-2 rounded-md border border-slate-300 text-slate-700 hover:bg-slate-50 text-sm md:text-base dark:border-neutral-600 dark:text-white dark:hover:bg-white/10"
               onClick={() => { setShowFilters((v) => !v); setShowSort(false); }}
               ref={filtersBtnRef}
             >
               Filters
-              {activeMeats.length ? <span className="ml-2 text-xs bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full">{activeMeats.length}</span> : null}
+              {activeMeats.length ? <span className="ml-2 text-xs bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full dark:bg-amber-500/20 dark:text-amber-200 dark:border dark:border-amber-400/40">{activeMeats.length}</span> : null}
             </button>
             <button
               type="button"
-              className="px-2.5 py-1.5 md:px-3 md:py-2 rounded-md border border-slate-300 text-slate-700 hover:bg-slate-50 text-sm md:text-base"
+              className="px-2.5 py-1.5 md:px-3 md:py-2 rounded-md border border-slate-300 text-slate-700 hover:bg-slate-50 text-sm md:text-base dark:border-neutral-600 dark:text-white dark:hover:bg-white/10"
               onClick={() => { setShowSort((v) => !v); setShowFilters(false); }}
               ref={sortBtnRef}
             >
@@ -191,11 +191,11 @@ const HomePage = () => {
 
           {/* Filters Dropdown */}
           {showFilters && (
-            <div ref={filtersRef} className="dropdown-panel absolute z-20 mt-1.5 md:mt-12 right-0 md:right-28 bg-white border border-slate-300 rounded-lg shadow-lg w-full md:w-80 p-2 md:p-4">
-              <div className="font-semibold text-slate-800 mb-2 text-sm md:text-base">Filter by Type</div>
+            <div ref={filtersRef} className="dropdown-panel absolute z-20 mt-1.5 md:mt-12 right-0 md:right-28 bg-white border border-slate-300 rounded-lg shadow-lg w-full md:w-80 p-2 md:p-4 dark:bg-[#2f3031] dark:border-[#555]">
+              <div className="font-semibold text-slate-800 mb-2 text-sm md:text-base dark:text-white">Filter by Type</div>
               <div className="grid grid-cols-2 gap-2">
                 {['Chicken', 'Mutton', 'Beef', 'Fish'].map((m) => (
-                  <label key={m} className={`inline-flex items-center gap-2 px-2.5 py-1.5 md:px-3 md:py-2 rounded-md border text-sm md:text-base ${types[m] ? 'bg-amber-50 border-amber-300 text-amber-800' : 'border-slate-300 text-slate-700'}`}>
+                  <label key={m} className={`inline-flex items-center gap-2 px-2.5 py-1.5 md:px-3 md:py-2 rounded-md border text-sm md:text-base ${types[m] ? 'bg-amber-50 border-amber-300 text-amber-800 dark:bg-amber-500/15 dark:border-amber-400 dark:text-amber-200' : 'border-slate-300 text-slate-700 dark:border-neutral-600 dark:text-gray-200'}`}>
                     <input
                       type="checkbox"
                       className="accent-amber-600"
@@ -209,7 +209,7 @@ const HomePage = () => {
               <div className="mt-3 md:mt-4 flex justify-between">
                 <button
                   type="button"
-                  className="px-2.5 py-1.5 md:px-3 md:py-2 rounded-md border border-slate-300 text-slate-700 hover:bg-slate-50 text-sm md:text-base"
+                  className="px-2.5 py-1.5 md:px-3 md:py-2 rounded-md border border-slate-300 text-slate-700 hover:bg-slate-50 text-sm md:text-base dark:border-neutral-600 dark:text-white dark:hover:bg-white/10"
                   onClick={() => setTypes({ Chicken: false, Mutton: false, Beef: false, Fish: false })}
                 >
                   Clear
@@ -227,7 +227,7 @@ const HomePage = () => {
 
           {/* Sort Dropdown */}
           {showSort && (
-            <div ref={sortRef} className="dropdown-panel absolute z-20 mt-1.5 md:mt-12 right-0 bg-white border border-slate-300 rounded-lg shadow-lg w-full md:w-64 p-1.5 md:p-2">
+            <div ref={sortRef} className="dropdown-panel absolute z-20 mt-1.5 md:mt-12 right-0 bg-white border border-slate-300 rounded-lg shadow-lg w-full md:w-64 p-1.5 md:p-2 dark:bg-[#2f3031] dark:border-[#555]">
               {[
                 { v: 'rating_desc', l: 'Rating (high → low)' },
                 { v: 'rating_asc', l: 'Rating (low → high)' },
@@ -239,7 +239,7 @@ const HomePage = () => {
                   key={opt.v}
                   type="button"
                   onClick={() => { setSortBy(opt.v); setShowSort(false); }}
-                  className={`w-full text-left px-2.5 py-1.5 md:px-3 md:py-2 rounded-md hover:bg-slate-50 text-sm md:text-base ${sortBy === opt.v ? 'bg-amber-50 text-amber-800' : 'text-slate-700'}`}
+                  className={`w-full text-left px-2.5 py-1.5 md:px-3 md:py-2 rounded-md hover:bg-slate-50 dark:hover:bg-white/10 text-sm md:text-base ${sortBy === opt.v ? 'bg-amber-50 text-amber-800 dark:bg-amber-500/15 dark:text-amber-200' : 'text-slate-700 dark:text-white'}`}
                 >
                   {opt.l}
                 </button>
@@ -250,14 +250,14 @@ const HomePage = () => {
 
         {/* Results meta */}
         {!loading && !error && (
-          <div className="mt-4 text-sm text-slate-600">Showing {filtered.length} of {restaurants.length} places</div>
+          <div className="mt-4 text-sm text-slate-600 dark:text-gray-300">Showing {filtered.length} of {restaurants.length} places</div>
         )}
 
         {loading && (
-          <div className="mt-8 text-center text-slate-600">Loading restaurants...</div>
+          <div className="mt-8 text-center text-slate-600 dark:text-white">Loading restaurants...</div>
         )}
         {error && (
-          <div className="mt-8 text-center text-red-600">{error}</div>
+          <div className="mt-8 text-center text-red-600 dark:text-red-400">{error}</div>
         )}
         {!loading && !error && (
           <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
