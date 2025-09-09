@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import RestaurantCard from '../components/RestaurantCard';
 import { useSearchParams } from 'react-router-dom';
@@ -130,16 +131,16 @@ const HomePage = () => {
             and delicious experiences await.
           </p>
           <div className="mt-3 flex items-center gap-2 flex-nowrap overflow-x-auto">
-            <a href="/leaderboards" className="inline-flex items-center gap-1.5 whitespace-nowrap bg-white text-amber-700 hover:bg-amber-50 font-medium px-2.5 py-1.5 md:px-3 md:py-2 rounded-md shadow text-sm md:text-base">
+            <Link to="/leaderboards" className="inline-flex items-center gap-1.5 whitespace-nowrap bg-white text-amber-700 hover:bg-amber-50 font-medium px-2.5 py-1.5 md:px-3 md:py-2 rounded-md shadow text-sm md:text-base">
               <span>🏆</span>
               <span className="md:hidden">Leaderboards</span>
               <span className="hidden md:inline">Explore Leaderboards</span>
-            </a>
-            <a href="/polls" className="inline-flex items-center gap-1.5 whitespace-nowrap bg-white/10 hover:bg-white/20 text-white font-medium px-2.5 py-1.5 md:px-3 md:py-2 rounded-md ring-1 ring-white/30 text-sm md:text-base">
+            </Link>
+            <Link to="/polls" className="inline-flex items-center gap-1.5 whitespace-nowrap bg-white/10 hover:bg-white/20 text-white font-medium px-2.5 py-1.5 md:px-3 md:py-2 rounded-md ring-1 ring-white/30 text-sm md:text-base">
               <span>🗳️</span>
               <span className="md:hidden">Polls</span>
               <span className="hidden md:inline">Vote in Polls</span>
-            </a>
+            </Link>
           </div>
         </div>
       </section>

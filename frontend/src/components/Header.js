@@ -24,6 +24,7 @@ const Header = () => {
   };
 
   return (
+    <>
     <header className="bg-gradient-to-r from-amber-500 to-amber-600 text-white shadow">
       <div className="container-app py-1 md:py-4 flex items-center justify-between">
         <Link to="/" className="font-extrabold text-base sm:text-lg md:text-2xl tracking-tight flex items-center gap-1 md:gap-2 leading-tight" onClick={() => setOpen(false)}>
@@ -42,18 +43,7 @@ const Header = () => {
             <li>
               <Link to="/polls" className="font-medium px-2 py-1 rounded-md hover:bg-white/10 hover:text-white transition-colors">Polls</Link>
             </li>
-            <li>
-              <button
-                type="button"
-                onClick={toggleTheme}
-                className="inline-flex items-center gap-2 px-2 py-1 rounded-md hover:bg-white/10 transition-colors"
-                aria-label="Toggle dark mode"
-                title="Toggle dark mode"
-              >
-                <span>{theme === 'dark' ? '🌙' : '☀️'}</span>
-                <span className="hidden lg:inline text-white/90 text-sm">{theme === 'dark' ? 'Dark' : 'Light'}</span>
-              </button>
-            </li>
+            
             {!user ? (
               <li>
                 <GoogleLoginButton onSuccess={(u, tok) => { setUser(u); setToken(tok); }} />
@@ -109,16 +99,7 @@ const Header = () => {
               <li>
                 <Link to="/polls" className="block py-1 font-medium rounded-md px-2 hover:bg-white/20 transition-colors text-xs" onClick={() => setOpen(false)}>Polls</Link>
               </li>
-              <li>
-                <button
-                  type="button"
-                  onClick={() => { toggleTheme(); }}
-                  className="w-full text-left py-1 rounded-md px-2 hover:bg-white/20 transition-colors text-xs inline-flex items-center gap-2"
-                >
-                  <span>{theme === 'dark' ? '🌙' : '☀️'}</span>
-                  <span>Toggle {theme === 'dark' ? 'Dark' : 'Light'} Mode</span>
-                </button>
-              </li>
+              
               {!user ? (
                 <li>
                   <div className="py-1">
@@ -147,6 +128,24 @@ const Header = () => {
         </div>
       )}
     </header>
+    {/* Floating dark mode toggle */}
+    {/* Floating theme toggle with label underneath */}
+    <div className="fixed top-20 right-3 md:top-24 md:right-6 z-50 flex flex-col items-center gap-1 select-none">
+      <button
+        type="button"
+        onClick={toggleTheme}
+        className="rounded-full bg-white text-amber-700 hover:bg-amber-50 shadow-xl ring-1 ring-black/10 dark:bg-[#2f3031] dark:text-white dark:hover:bg-[#3a3b3c] dark:ring-white/30 p-2 md:p-3 lg:p-4 transition transform hover:scale-105"
+        aria-label="Toggle dark mode"
+        title={theme === 'dark' ? 'Switch to Light mode' : 'Switch to Dark mode'}
+      >
+        <span className="text-lg md:text-xl lg:text-2xl">{theme === 'dark' ? '🌙' : '☀️'}</span>
+        <span className="sr-only">Toggle theme</span>
+      </button>
+      <span className="px-1.5 py-0.5 md:px-2 md:py-0.5 rounded-md text-[10px] sm:text-xs md:text-sm font-medium bg-black/20 text-white dark:bg-white/10 dark:text-white shadow">
+        {theme === 'dark' ? 'Dark' : 'Light'}
+      </span>
+    </div>
+    </>
   );
 };
 
