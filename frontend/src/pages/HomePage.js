@@ -123,7 +123,7 @@ const HomePage = () => {
     <div>
       {/* Hero */}
       <section className="bg-gradient-to-br from-amber-400 to-amber-600 text-white">
-        <div className="container-app py-16">
+        <div className="container-app py-8 md:py-16">
           <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight">Best Mandhi in Town</h1>
           <p className="mt-3 text-white/90 max-w-2xl">
             Discover the finest mandhi spots around you. Curated lists, beautiful photos,
