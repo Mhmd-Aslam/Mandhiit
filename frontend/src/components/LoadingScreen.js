@@ -5,24 +5,26 @@ import { motion, AnimatePresence } from 'framer-motion';
 const favicon = '/favicon.ico';
 
 const LoadingScreen = () => {
+  // Show loader on every full page load (not on in-app route changes)
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const handleLoad = () => {
-      // Add a small delay for the animation to be visible
+    if (!isLoading) return;
+
+    const finish = () => {
       const timer = setTimeout(() => {
         setIsLoading(false);
-      }, 2000); // Slightly longer duration for the new animation
+      }, 2000);
       return () => clearTimeout(timer);
     };
 
     if (document.readyState === 'complete') {
-      handleLoad();
+      return finish();
     } else {
-      window.addEventListener('load', handleLoad);
-      return () => window.removeEventListener('load', handleLoad);
+      window.addEventListener('load', finish);
+      return () => window.removeEventListener('load', finish);
     }
-  }, []);
+  }, [isLoading]);
 
   return (
     <AnimatePresence>
