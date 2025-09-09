@@ -7,6 +7,8 @@ import RestaurantDetail from './pages/RestaurantDetail';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Profile from './pages/Profile';
+import Leaderboards from './pages/Leaderboards';
+import Polls from './pages/Polls';
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/leaderboards" element={<Leaderboards />} />
+            <Route path="/polls" element={<Polls />} />
           </Routes>
         </main>
         <Footer />

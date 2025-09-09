@@ -31,6 +31,12 @@ const Header = () => {
             <li>
               <Link to="/" className="hover:text-white/90 font-medium">Home</Link>
             </li>
+            <li>
+              <Link to="/leaderboards" className="hover:text-white/90 font-medium">Leaderboards</Link>
+            </li>
+            <li>
+              <Link to="/polls" className="hover:text-white/90 font-medium">Polls</Link>
+            </li>
             {!user ? (
               <li>
                 <GoogleLoginButton onSuccess={(u, tok) => { setUser(u); setToken(tok); }} />

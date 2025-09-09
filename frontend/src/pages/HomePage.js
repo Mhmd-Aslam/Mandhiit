@@ -129,6 +129,14 @@ const HomePage = () => {
             Discover the finest mandhi spots around you. Curated lists, beautiful photos,
             and delicious experiences await.
           </p>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <a href="/leaderboards" className="inline-flex items-center gap-2 bg-white text-amber-700 hover:bg-amber-50 font-medium px-4 py-2 rounded-md shadow">
+              🏆 Explore Leaderboards
+            </a>
+            <a href="/polls" className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white font-medium px-4 py-2 rounded-md ring-1 ring-white/30">
+              🗳️ Vote in Polls
+            </a>
+          </div>
         </div>
       </section>
 
