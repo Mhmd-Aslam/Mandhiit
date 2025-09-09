@@ -29,9 +29,9 @@ export default function Polls() {
   return (
     <div>
       <section className="bg-gradient-to-br from-amber-400 to-amber-600 text-white">
-        <div className="container-app py-6 md:py-12">
-          <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">Community Polls</h1>
-          <p className="mt-2 text-white/90 max-w-2xl">Vote on the best Mandhi by city or type. No login required to view results.</p>
+        <div className="container-app py-4 md:py-10">
+          <h1 className="text-2xl md:text-4xl font-extrabold tracking-tight">Community Polls</h1>
+          <p className="mt-1.5 text-white/90 max-w-2xl">Vote on the best Mandhi by city or type. No login required to view results.</p>
         </div>
       </section>
       <section className="container-app py-10">

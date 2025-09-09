@@ -123,18 +123,22 @@ const HomePage = () => {
     <div>
       {/* Hero */}
       <section className="bg-gradient-to-br from-amber-400 to-amber-600 text-white">
-        <div className="container-app py-8 md:py-16">
-          <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight">Best Mandhi in Town</h1>
-          <p className="mt-3 text-white/90 max-w-2xl">
+        <div className="container-app py-2 md:py-10">
+          <h1 className="text-xl md:text-5xl font-extrabold tracking-tight">Best Mandhi in Town</h1>
+          <p className="mt-1 text-white/90 max-w-2xl text-sm md:text-base">
             Discover the finest mandhi spots around you. Curated lists, beautiful photos,
             and delicious experiences await.
           </p>
-          <div className="mt-6 flex flex-wrap gap-3">
-            <a href="/leaderboards" className="inline-flex items-center gap-2 bg-white text-amber-700 hover:bg-amber-50 font-medium px-4 py-2 rounded-md shadow">
-              🏆 Explore Leaderboards
+          <div className="mt-3 flex items-center gap-2 flex-nowrap overflow-x-auto">
+            <a href="/leaderboards" className="inline-flex items-center gap-1.5 whitespace-nowrap bg-white text-amber-700 hover:bg-amber-50 font-medium px-2.5 py-1.5 md:px-3 md:py-2 rounded-md shadow text-sm md:text-base">
+              <span>🏆</span>
+              <span className="md:hidden">Leaderboards</span>
+              <span className="hidden md:inline">Explore Leaderboards</span>
             </a>
-            <a href="/polls" className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white font-medium px-4 py-2 rounded-md ring-1 ring-white/30">
-              🗳️ Vote in Polls
+            <a href="/polls" className="inline-flex items-center gap-1.5 whitespace-nowrap bg-white/10 hover:bg-white/20 text-white font-medium px-2.5 py-1.5 md:px-3 md:py-2 rounded-md ring-1 ring-white/30 text-sm md:text-base">
+              <span>🗳️</span>
+              <span className="md:hidden">Polls</span>
+              <span className="hidden md:inline">Vote in Polls</span>
             </a>
           </div>
         </div>
@@ -159,7 +163,7 @@ const HomePage = () => {
           <div className="flex items-center gap-3">
             <button
               type="button"
-              className="px-3 py-2 rounded-md border border-slate-300 text-slate-700 hover:bg-slate-50"
+              className="px-2.5 py-1.5 md:px-3 md:py-2 rounded-md border border-slate-300 text-slate-700 hover:bg-slate-50 text-sm md:text-base"
               onClick={() => { setShowFilters((v) => !v); setShowSort(false); }}
               ref={filtersBtnRef}
             >
@@ -168,7 +172,7 @@ const HomePage = () => {
             </button>
             <button
               type="button"
-              className="px-3 py-2 rounded-md border border-slate-300 text-slate-700 hover:bg-slate-50"
+              className="px-2.5 py-1.5 md:px-3 md:py-2 rounded-md border border-slate-300 text-slate-700 hover:bg-slate-50 text-sm md:text-base"
               onClick={() => { setShowSort((v) => !v); setShowFilters(false); }}
               ref={sortBtnRef}
             >
@@ -187,11 +191,11 @@ const HomePage = () => {
 
           {/* Filters Dropdown */}
           {showFilters && (
-            <div ref={filtersRef} className="dropdown-panel absolute z-20 mt-2 md:mt-12 right-28 md:right-28 bg-white border border-slate-300 rounded-lg shadow-lg w-full md:w-80 p-4">
-              <div className="font-semibold text-slate-800 mb-3">Filter by Type</div>
+            <div ref={filtersRef} className="dropdown-panel absolute z-20 mt-1.5 md:mt-12 right-0 md:right-28 bg-white border border-slate-300 rounded-lg shadow-lg w-full md:w-80 p-2 md:p-4">
+              <div className="font-semibold text-slate-800 mb-2 text-sm md:text-base">Filter by Type</div>
               <div className="grid grid-cols-2 gap-2">
                 {['Chicken', 'Mutton', 'Beef', 'Fish'].map((m) => (
-                  <label key={m} className={`inline-flex items-center gap-2 px-3 py-2 rounded-md border ${types[m] ? 'bg-amber-50 border-amber-300 text-amber-800' : 'border-slate-300 text-slate-700'}`}>
+                  <label key={m} className={`inline-flex items-center gap-2 px-2.5 py-1.5 md:px-3 md:py-2 rounded-md border text-sm md:text-base ${types[m] ? 'bg-amber-50 border-amber-300 text-amber-800' : 'border-slate-300 text-slate-700'}`}>
                     <input
                       type="checkbox"
                       className="accent-amber-600"
@@ -202,17 +206,17 @@ const HomePage = () => {
                   </label>
                 ))}
               </div>
-              <div className="mt-4 flex justify-between">
+              <div className="mt-3 md:mt-4 flex justify-between">
                 <button
                   type="button"
-                  className="px-3 py-2 rounded-md border border-slate-300 text-slate-700 hover:bg-slate-50"
+                  className="px-2.5 py-1.5 md:px-3 md:py-2 rounded-md border border-slate-300 text-slate-700 hover:bg-slate-50 text-sm md:text-base"
                   onClick={() => setTypes({ Chicken: false, Mutton: false, Beef: false, Fish: false })}
                 >
                   Clear
                 </button>
                 <button
                   type="button"
-                  className="btn-primary"
+                  className="btn-primary px-3 py-1.5 md:py-2 text-sm md:text-base"
                   onClick={() => setShowFilters(false)}
                 >
                   Apply
@@ -223,7 +227,7 @@ const HomePage = () => {
 
           {/* Sort Dropdown */}
           {showSort && (
-            <div ref={sortRef} className="dropdown-panel absolute z-20 mt-2 md:mt-12 right-0 bg-white border border-slate-300 rounded-lg shadow-lg w-full md:w-64 p-2">
+            <div ref={sortRef} className="dropdown-panel absolute z-20 mt-1.5 md:mt-12 right-0 bg-white border border-slate-300 rounded-lg shadow-lg w-full md:w-64 p-1.5 md:p-2">
               {[
                 { v: 'rating_desc', l: 'Rating (high → low)' },
                 { v: 'rating_asc', l: 'Rating (low → high)' },
@@ -235,7 +239,7 @@ const HomePage = () => {
                   key={opt.v}
                   type="button"
                   onClick={() => { setSortBy(opt.v); setShowSort(false); }}
-                  className={`w-full text-left px-3 py-2 rounded-md hover:bg-slate-50 ${sortBy === opt.v ? 'bg-amber-50 text-amber-800' : 'text-slate-700'}`}
+                  className={`w-full text-left px-2.5 py-1.5 md:px-3 md:py-2 rounded-md hover:bg-slate-50 text-sm md:text-base ${sortBy === opt.v ? 'bg-amber-50 text-amber-800' : 'text-slate-700'}`}
                 >
                   {opt.l}
                 </button>

@@ -24,7 +24,7 @@ const Header = () => {
   return (
     <header className="bg-gradient-to-r from-amber-500 to-amber-600 text-white shadow">
       <div className="container-app py-1 md:py-4 flex items-center justify-between">
-        <Link to="/" className="font-extrabold text-lg sm:text-xl md:text-2xl tracking-tight flex items-center gap-2" onClick={() => setOpen(false)}>
+        <Link to="/" className="font-extrabold text-base sm:text-lg md:text-2xl tracking-tight flex items-center gap-1 md:gap-2 leading-tight" onClick={() => setOpen(false)}>
           <span role="img" aria-label="plate">🍽️</span>
           <span>Best Mandhi in Town</span>
         </Link>
@@ -67,7 +67,7 @@ const Header = () => {
         {/* Mobile hamburger */}
         <button
           type="button"
-          className="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-md bg-white/15 hover:bg-white/25"
+          className="md:hidden inline-flex items-center justify-center w-8 h-8 rounded-md bg-white/15 hover:bg-white/25"
           aria-label="Toggle menu"
           onClick={() => setOpen((v) => !v)}
         >
@@ -84,37 +84,37 @@ const Header = () => {
       {/* Mobile menu */}
       {open && (
         <div className="md:hidden border-t border-white/15 bg-amber-600/95 backdrop-blur">
-          <div className="container-app py-3">
-            <ul className="flex flex-col gap-3">
+          <div className="container-app py-1">
+            <ul className="flex flex-col gap-2">
               <li>
-                <Link to="/" className="block py-2 font-medium rounded-md px-2 hover:bg-white/20 transition-colors" onClick={() => setOpen(false)}>Home</Link>
+                <Link to="/" className="block py-1 font-medium rounded-md px-2 hover:bg-white/20 transition-colors text-xs" onClick={() => setOpen(false)}>Home</Link>
               </li>
               <li>
-                <Link to="/leaderboards" className="block py-2 font-medium rounded-md px-2 hover:bg-white/20 transition-colors" onClick={() => setOpen(false)}>Leaderboards</Link>
+                <Link to="/leaderboards" className="block py-1 font-medium rounded-md px-2 hover:bg-white/20 transition-colors text-xs" onClick={() => setOpen(false)}>Leaderboards</Link>
               </li>
               <li>
-                <Link to="/polls" className="block py-2 font-medium rounded-md px-2 hover:bg-white/20 transition-colors" onClick={() => setOpen(false)}>Polls</Link>
+                <Link to="/polls" className="block py-1 font-medium rounded-md px-2 hover:bg-white/20 transition-colors text-xs" onClick={() => setOpen(false)}>Polls</Link>
               </li>
               {!user ? (
                 <li>
-                  <div className="py-2">
+                  <div className="py-1">
                     <GoogleLoginButton onSuccess={(u, tok) => { setUser(u); setToken(tok); setOpen(false); }} />
                   </div>
                 </li>
               ) : (
                 <>
                   <li>
-                    <Link to="/profile" className="flex items-center gap-3 py-2 rounded-md px-2 hover:bg-white/20 transition-colors" onClick={() => setOpen(false)}>
+                    <Link to="/profile" className="flex items-center gap-2 py-1 rounded-md px-2 hover:bg-white/20 transition-colors text-xs" onClick={() => setOpen(false)}>
                       <img
                         src={user.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name || user.email)}&background=f59e0b&color=fff&size=64&rounded=true`}
                         alt="avatar"
-                        className="w-8 h-8 rounded-full ring-2 ring-white/40"
+                        className="w-6 h-6 rounded-full ring-2 ring-white/40"
                       />
                       <span className="font-medium">{user.name || user.email}</span>
                     </Link>
                   </li>
                   <li>
-                    <button onClick={onLogout} className="w-full text-left bg-white/15 hover:bg-white/25 text-white px-3 py-2 rounded-md transition">Logout</button>
+                    <button onClick={onLogout} className="w-full text-left bg-white/15 hover:bg-white/25 text-white px-2.5 py-1 rounded-md transition text-xs">Logout</button>
                   </li>
                 </>
               )}

@@ -48,9 +48,9 @@ export default function Leaderboards() {
   return (
     <div>
       <section className="bg-gradient-to-br from-amber-400 to-amber-600 text-white">
-        <div className="container-app py-6 md:py-12">
-          <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">Leaderboards</h1>
-          <p className="mt-2 text-white/90 max-w-2xl">Top-rated restaurants by city and type. Public and shareable.</p>
+        <div className="container-app py-4 md:py-10">
+          <h1 className="text-2xl md:text-4xl font-extrabold tracking-tight">Leaderboards</h1>
+          <p className="mt-1.5 text-white/90 max-w-2xl">Top-rated restaurants by city and type. Public and shareable.</p>
         </div>
       </section>
       <section className="container-app py-10">
