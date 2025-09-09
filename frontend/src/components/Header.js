@@ -32,13 +32,13 @@ const Header = () => {
         <nav className="hidden md:block">
           <ul className="flex items-center gap-6">
             <li>
-              <Link to="/" className="hover:text-white/90 font-medium">Home</Link>
+              <Link to="/" className="font-medium px-2 py-2 rounded-md hover:bg-white/10 hover:text-white transition-colors">Home</Link>
             </li>
             <li>
-              <Link to="/leaderboards" className="hover:text-white/90 font-medium">Leaderboards</Link>
+              <Link to="/leaderboards" className="font-medium px-2 py-2 rounded-md hover:bg-white/10 hover:text-white transition-colors">Leaderboards</Link>
             </li>
             <li>
-              <Link to="/polls" className="hover:text-white/90 font-medium">Polls</Link>
+              <Link to="/polls" className="font-medium px-2 py-2 rounded-md hover:bg-white/10 hover:text-white transition-colors">Polls</Link>
             </li>
             {!user ? (
               <li>
@@ -47,7 +47,7 @@ const Header = () => {
             ) : (
               <>
                 <li>
-                  <Link to="/profile" className="flex items-center gap-3 hover:text-white/90">
+                  <Link to="/profile" className="flex items-center gap-3 px-2 py-1 rounded-md hover:bg-white/10 hover:text-white transition-colors">
                     <span className="hidden sm:inline text-white/90 font-medium">Hi, {user.name || user.email}</span>
                     <img
                       src={user.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name || user.email)}&background=f59e0b&color=fff&size=64&rounded=true`}
@@ -87,13 +87,13 @@ const Header = () => {
           <div className="container-app py-3">
             <ul className="flex flex-col gap-3">
               <li>
-                <Link to="/" className="block py-2 font-medium" onClick={() => setOpen(false)}>Home</Link>
+                <Link to="/" className="block py-2 font-medium rounded-md px-2 hover:bg-white/20 transition-colors" onClick={() => setOpen(false)}>Home</Link>
               </li>
               <li>
-                <Link to="/leaderboards" className="block py-2 font-medium" onClick={() => setOpen(false)}>Leaderboards</Link>
+                <Link to="/leaderboards" className="block py-2 font-medium rounded-md px-2 hover:bg-white/20 transition-colors" onClick={() => setOpen(false)}>Leaderboards</Link>
               </li>
               <li>
-                <Link to="/polls" className="block py-2 font-medium" onClick={() => setOpen(false)}>Polls</Link>
+                <Link to="/polls" className="block py-2 font-medium rounded-md px-2 hover:bg-white/20 transition-colors" onClick={() => setOpen(false)}>Polls</Link>
               </li>
               {!user ? (
                 <li>
@@ -104,7 +104,7 @@ const Header = () => {
               ) : (
                 <>
                   <li>
-                    <Link to="/profile" className="flex items-center gap-3 py-2" onClick={() => setOpen(false)}>
+                    <Link to="/profile" className="flex items-center gap-3 py-2 rounded-md px-2 hover:bg-white/20 transition-colors" onClick={() => setOpen(false)}>
                       <img
                         src={user.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name || user.email)}&background=f59e0b&color=fff&size=64&rounded=true`}
                         alt="avatar"
