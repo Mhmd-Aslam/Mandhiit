@@ -30,7 +30,7 @@ const LoadingScreen = () => {
     <AnimatePresence>
       {isLoading && (
         <motion.div
-          className="fixed inset-0 bg-gradient-to-br from-amber-50 to-amber-100 flex flex-col items-center justify-center z-50 overflow-hidden"
+          className="loading-screen fixed inset-0 bg-gradient-to-br from-amber-50 to-amber-100 dark:bg-[#393a3b] flex flex-col items-center justify-center z-50 overflow-hidden"
           initial={{ opacity: 1 }}
           exit={{ 
             opacity: 0,
@@ -84,7 +84,7 @@ const LoadingScreen = () => {
               />
             </motion.div>
 
-            {/* Title with staggered animation */}
+            {/* Title with staggered animation (same font/size and color across modes) */}
             <motion.h1 
               className="text-3xl md:text-4xl font-extrabold text-amber-800 mb-8 text-center"
               initial={{ opacity: 0, y: 20 }}
@@ -103,7 +103,7 @@ const LoadingScreen = () => {
 
             {/* Subtle loading indicator */}
             <motion.div 
-              className="w-48 h-1.5 bg-amber-200 rounded-full overflow-hidden"
+              className="w-48 h-1.5 bg-amber-200 dark:bg-white/20 rounded-full overflow-hidden"
               initial={{ opacity: 0, width: 0 }}
               animate={{
                 opacity: 1,

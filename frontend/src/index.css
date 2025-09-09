@@ -14,6 +14,8 @@
   html.dark body { background-color: #393a3b; color: #ffffff; }
   /* Headings more prominent in dark */
   html.dark h1, html.dark h2, html.dark h3, html.dark h4, html.dark h5, html.dark h6 { color: #ffffff; }
+  /* Exception: keep amber title in loading animation even in dark mode */
+  html.dark .loading-screen h1 { color: #92400e !important; }
 }
 
 /* Reusable component classes */
