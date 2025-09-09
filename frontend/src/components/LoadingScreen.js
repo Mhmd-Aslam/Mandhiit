@@ -18,11 +18,21 @@ const LoadingScreen = () => {
       return () => clearTimeout(timer);
     };
 
+    // Mark loading state on <html> to allow global CSS overrides
+    document.documentElement.classList.add('loading-active');
+
     if (document.readyState === 'complete') {
       return finish();
     } else {
       window.addEventListener('load', finish);
       return () => window.removeEventListener('load', finish);
+    }
+  }, [isLoading]);
+
+  // Remove the html marker when loading ends
+  useEffect(() => {
+    if (!isLoading) {
+      document.documentElement.classList.remove('loading-active');
     }
   }, [isLoading]);
 

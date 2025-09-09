@@ -20,6 +20,10 @@
 
 /* Reusable component classes */
 @layer components {
+  /* Hide theme toggle while loading animation is active */
+  html.loading-active .theme-toggle-wrap { display: none !important; }
+  /* Remove scrollbars while loading animation is active */
+  html.loading-active, html.loading-active body { overflow: hidden !important; }
   .container-app {
     @apply max-w-6xl mx-auto px-4;
   }

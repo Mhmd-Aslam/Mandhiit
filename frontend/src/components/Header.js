@@ -130,7 +130,7 @@ const Header = () => {
     </header>
     {/* Floating dark mode toggle */}
     {/* Floating theme toggle with label underneath */}
-    <div className="fixed top-20 right-3 md:top-24 md:right-6 z-50 flex flex-col items-center gap-1 select-none">
+    <div className="theme-toggle-wrap fixed top-20 right-3 md:top-24 md:right-6 z-50 flex flex-col items-center gap-1 select-none">
       <button
         type="button"
         onClick={toggleTheme}
