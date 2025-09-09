@@ -3,8 +3,10 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import RestaurantCard from '../components/RestaurantCard';
 import { useSearchParams } from 'react-router-dom';
+import { useTheme } from '../context/ThemeContext';
 
 const HomePage = () => {
+  const { theme, toggleTheme } = useTheme();
   const [searchParams, setSearchParams] = useSearchParams();
   const [restaurants, setRestaurants] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -124,7 +126,23 @@ const HomePage = () => {
     <div>
       {/* Hero */}
       <section className="bg-gradient-to-br from-amber-400 to-amber-600 text-white">
-        <div className="container-app py-2 md:py-10">
+        <div className="container-app relative py-2 md:py-10">
+          {/* Theme toggle inside hero (top-right) */}
+          <div className="theme-toggle-wrap absolute top-2 right-2 md:top-4 md:right-4 flex flex-col items-center gap-1 select-none">
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="rounded-full bg-white text-amber-700 hover:bg-amber-50 shadow-xl ring-1 ring-black/10 dark:bg-[#2f3031] dark:text-white dark:hover:bg-[#3a3b3c] dark:ring-white/30 p-2 md:p-3 transition transform hover:scale-105"
+              aria-label="Toggle dark mode"
+              title={theme === 'dark' ? 'Switch to Light mode' : 'Switch to Dark mode'}
+            >
+              <span className="text-lg md:text-xl">{theme === 'dark' ? '🌙' : '☀️'}</span>
+              <span className="sr-only">Toggle theme</span>
+            </button>
+            <span className="px-1.5 py-0.5 rounded-md text-[10px] sm:text-xs font-medium bg-black/20 text-white dark:bg-white/10 dark:text-white shadow">
+              {theme === 'dark' ? 'Dark' : 'Light'}
+            </span>
+          </div>
           <h1 className="text-xl md:text-5xl font-extrabold tracking-tight">Best Mandhi in Town</h1>
           <p className="mt-1 text-white/90 max-w-2xl text-sm md:text-base">
             Discover the finest mandhi spots around you. Curated lists, beautiful photos,

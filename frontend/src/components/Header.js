@@ -3,11 +3,10 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 import GoogleLoginButton from './GoogleLoginButton';
-import { useTheme } from '../context/ThemeContext';
+// Theme toggle is now handled inside HomePage hero; no need to import here
 
 const Header = () => {
   const { user, logout, token, setUser, setToken } = useAuth();
-  const { theme, toggleTheme } = useTheme();
   const [open, setOpen] = useState(false);
 
   const onLogout = async () => {
@@ -128,23 +127,6 @@ const Header = () => {
         </div>
       )}
     </header>
-    {/* Floating dark mode toggle */}
-    {/* Floating theme toggle with label underneath */}
-    <div className="theme-toggle-wrap fixed top-20 right-3 md:top-24 md:right-6 z-50 flex flex-col items-center gap-1 select-none">
-      <button
-        type="button"
-        onClick={toggleTheme}
-        className="rounded-full bg-white text-amber-700 hover:bg-amber-50 shadow-xl ring-1 ring-black/10 dark:bg-[#2f3031] dark:text-white dark:hover:bg-[#3a3b3c] dark:ring-white/30 p-2 md:p-3 lg:p-4 transition transform hover:scale-105"
-        aria-label="Toggle dark mode"
-        title={theme === 'dark' ? 'Switch to Light mode' : 'Switch to Dark mode'}
-      >
-        <span className="text-lg md:text-xl lg:text-2xl">{theme === 'dark' ? '🌙' : '☀️'}</span>
-        <span className="sr-only">Toggle theme</span>
-      </button>
-      <span className="px-1.5 py-0.5 md:px-2 md:py-0.5 rounded-md text-[10px] sm:text-xs md:text-sm font-medium bg-black/20 text-white dark:bg-white/10 dark:text-white shadow">
-        {theme === 'dark' ? 'Dark' : 'Light'}
-      </span>
-    </div>
     </>
   );
 };
