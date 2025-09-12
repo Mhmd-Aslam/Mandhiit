@@ -28,7 +28,7 @@ const Header = () => {
       <div className="container-app py-1 md:py-4 flex items-center justify-between">
         <Link to="/" className="font-extrabold text-base sm:text-lg md:text-2xl tracking-tight flex items-center gap-1 md:gap-2 leading-tight" onClick={() => setOpen(false)}>
           <span role="img" aria-label="plate">🍽️</span>
-          <span>Best Mandhi in Town</span>
+          <span>Mandhiit</span>
         </Link>
         {/* Desktop nav */}
         <nav className="hidden md:block">
