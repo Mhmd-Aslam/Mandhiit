@@ -11,7 +11,6 @@ const HomePage = () => {
   const [restaurants, setRestaurants] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [thumbs, setThumbs] = useState([]);
   const [query, setQuery] = useState(searchParams.get('q') || '');
   const initialMeats = (searchParams.get('meats') || '')
     .split(',')
@@ -35,13 +34,6 @@ const HomePage = () => {
         if (isMounted) {
           setRestaurants(res.data || []);
         }
-        // fetch mandhi thumbnails list in parallel (best-effort)
-        try {
-          const imgRes = await axios.get('/api/assets/mandhi-images');
-          if (isMounted && Array.isArray(imgRes.data)) {
-            setThumbs(imgRes.data.filter(Boolean));
-          }
-        } catch {}
       } catch (e) {
         console.error(e);
         if (isMounted) setError('Failed to load restaurants. Please try again.');
@@ -175,7 +167,7 @@ const HomePage = () => {
       <section className="container-app py-10">
         <div className="flex items-center justify-between">
           <h2 className="text-2xl font-bold text-slate-800">Top Mandhi Spots</h2>
-          <Link to="/" className="text-amber-600 hover:text-amber-700 font-medium">View all</Link>
+          <a href="#" className="text-amber-600 hover:text-amber-700 font-medium">View all</a>
         </div>
 
         {/* Search & Top Controls */}
@@ -288,12 +280,8 @@ const HomePage = () => {
         )}
         {!loading && !error && (
           <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {sorted.map((r, idx) => (
-              <RestaurantCard
-                key={r.id}
-                restaurant={r}
-                imageSrc={thumbs.length ? thumbs[idx % thumbs.length] : undefined}
-              />
+            {sorted.map((r) => (
+              <RestaurantCard key={r.id} restaurant={r} />
             ))}
           </div>
         )}

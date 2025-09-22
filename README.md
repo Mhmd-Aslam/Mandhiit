@@ -1,47 +1,58 @@
-# Best Mandhi in Town
+# Best Mandhi in Town 🍽️
 
-Find your next favorite Mandhi spot. Best Mandhi in Town is a community-powered guide to the most loved Mandhi restaurants around you — with photos, ratings, and crowd favorites.
+Bold, flavorful Mandhi picks at your fingertips. This simple site helps you discover great Mandhi spots in your city — no login, just tasty leads.
 
-What you can do
-- Discover great places: Browse a curated list of Mandhi restaurants with location, specialties, and ratings at a glance.
-- Search smarter: Look up restaurants by name, city, or dish keywords (e.g., “Chicken Mandhi in Kottayam”).
-- Filter your way: Narrow results by meat type — Chicken, Mutton, Beef, or Fish.
-- Sort the list: See the highest-rated, most reviewed, or browse alphabetically.
-- See real opinions: Average ratings and review counts are shown on every card and detail page.
-- Share a view: Your search and filters stay in the URL, so you can copy and share the exact results.
-- Add your voice: Sign in with Google to post reviews and upload mouth-watering photos.
-- Join the fun: Check public Leaderboards and weekly Polls to see what the community loves right now.
+## Features
+- 🍛 Browse a curated list of Mandhi spots
+- 📍 See each place’s name, location, and type
+- 🧭 Clean, simple layout that’s easy to navigate
 
-Highlights
-- Always-on search, filters, and sort.
-- Google sign-in only when you need to review — browsing is always open.
-- Clean, modern design with an emphasis on food photos and readability.
-- Public Leaderboards and Polls (visible to everyone) to spotlight crowd favorites.
+## Quick Start
+1) Start the restaurant data (backend)
+   - Open the `backend` folder
+   - Run the app (double-click/run your usual start command). If you use commands, it’s typically:
+     - Create a virtual environment (optional)
+     - Install requirements
+     - Start the app
 
-Pages at a glance
-- Home: Search, filter, sort, and discover Mandhi spots.
-- Restaurant: Detailed info, star ratings, reviews, and a photo gallery.
-- Leaderboards: Top Mandhi restaurants by city and type with medals and scores.
-- Polls: Weekly community polls — vote and see live results.
-- Profile: Your name, avatar, and activity once you sign in with Google.
+2) Start the website (frontend)
+   - Open the `frontend` folder
+   - Install dependencies once, then start the site
+   - When it’s running, open it in your browser (usually http://localhost:3000 or http://localhost:5173)
 
-How to contribute
-- Share your experience: Add ratings, reviews, and photos to help others.
-- Send ideas: Have a feature in mind (badges, city coverage, improvements)? Open an issue or get in touch.
+That’s it. Keep both windows running while you use the site.
 
-What’s coming next
-- Real-time leaderboards powered by community reviews.
-- Badges and recognition for top contributors.
-- Comments and likes on reviews.
-- City expansions and more verified Mandhi spots.
+## Screenshots
 
-Quick start (for testers)
-- Visit the site locally: Start the backend and frontend servers (see DEV_NOTES.md coming soon for technical setup).
-- Sign in with Google to post a review and try photo upload.
-- Explore Leaderboards and Polls — they’re public and great for sharing.
 
-Contact
-- Created by Mhmd-Aslam — feedback and suggestions are always welcome.
+## What’s inside
+- Pages: Home (listings) and simple Restaurant details
+- Components: `Header.js`, `RestaurantCard.js`
+- Pages directory: `HomePage.js`, `Profile.js` (future use)
+- App shell and routing: `App.js`
+- Mock restaurant data used for a quick start (no login)
 
-License
-- MIT (c) 2025 Mhmd-Aslam
+## Future ideas
+- Photos, menus, ratings on the detail page
+- Optional sign in for saving favorites
+- Easy deployment to a hosting service when ready
+
+
+## Getting Started
+Quick version:
+- Start data server (backend)
+- Start website (frontend)
+- Open in browser: http://localhost:3000 or http://localhost:5173
+Keep both windows running while you browse.
+
+## Roadmap
+- Replace example data with real data
+- Add search and filters
+- Show photos, menus, and ratings
+
+## License
+This project is currently unlicensed.
+
+## Acknowledgements
+- Built with React and Flask
+- Inspired by a love for authentic Mandhi
