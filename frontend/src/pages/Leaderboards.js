@@ -1,23 +1,43 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
-const SAMPLE = [
-  { id: 1, name: 'Khaleef Mandi', city: 'Kottayam', type: 'Chicken', avg_rating: 4.6, review_count: 214, image: 'https://images.unsplash.com/photo-1550547660-d9450f859349?w=640' },
-  { id: 2, name: 'Al Baike Mandhi Hub', city: 'Erattupetta', type: 'Chicken', avg_rating: 4.3, review_count: 128, image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=640' },
-  { id: 3, name: 'Ajwa Food Park', city: 'Pala', type: 'Chicken', avg_rating: 4.2, review_count: 162, image: 'https://images.unsplash.com/photo-1562967914-608f82629710?w=640' },
-  { id: 4, name: 'Al Ajmi Yemen Mandi', city: 'Erattupetta', type: 'Mutton', avg_rating: 4.4, review_count: 97, image: 'https://images.unsplash.com/photo-1550547660-acef4926b7f8?w=640' },
-  { id: 5, name: 'Ikkannte Manthikada', city: 'Thalayolaparambu', type: 'Chicken', avg_rating: 4.5, review_count: 201, image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=640' },
-  { id: 6, name: 'Majlis Yemen Mandi', city: 'Kuravilangadu', type: 'Beef', avg_rating: 4.1, review_count: 88, image: 'https://images.unsplash.com/photo-1604908554233-95e2e2ac43d8?w=640' },
-  { id: 7, name: 'Moopans Restaurant', city: 'Athirampuzha', type: 'Chicken', avg_rating: 4.0, review_count: 133, image: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=640' },
-];
+// Use the same source as HomePage: GET /api/restaurants
 
 export default function Leaderboards() {
   const [city, setCity] = useState('all');
   const [meat, setMeat] = useState('all');
   const [sort, setSort] = useState('score');
+  const [raw, setRaw] = useState([]); // fetched restaurants
+
+  // Load restaurants from the same API as HomePage
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        const res = await axios.get('/api/restaurants');
+        if (mounted) setRaw(res.data || []);
+      } catch (e) {
+        if (mounted) setRaw([]);
+      }
+    })();
+    return () => { mounted = false; };
+  }, []);
+
+  // Normalize into the shape Leaderboards expects
+  const SOURCE = useMemo(() => (raw || []).map((r, idx) => ({
+    id: r.id,
+    name: r.name,
+    city: r.location,            // show the same location string
+    type: r.type,                // e.g., Hyderabadi Cuisine
+    avg_rating: r.avg_rating ?? r.rating ?? 0,
+    review_count: r.review_count ?? 0,
+    image: r.image,
+    // score computed later
+  })), [raw]);
 
   const list = useMemo(() => {
-    const filtered = SAMPLE.filter((r) => (
+    const filtered = SOURCE.filter((r) => (
       (city === 'all' || r.city.toLowerCase() === city) &&
       (meat === 'all' || r.type.toLowerCase() === meat)
     ));
@@ -33,7 +53,7 @@ export default function Leaderboards() {
       return b.score - a.score;
     });
     return sorted.slice(0, 10);
-  }, [city, meat, sort]);
+  }, [city, meat, sort, SOURCE]);
 
   const Medal = ({ rank }) => {
     const styles = [
@@ -88,7 +108,7 @@ export default function Leaderboards() {
                     <h3 className="text-lg font-bold text-slate-800 dark:text-white">{r.name}</h3>
                     <span className="text-sm text-slate-500 dark:text-gray-300">{r.city}</span>
                   </div>
-                  <div className="mt-1 text-amber-700 font-medium">{r.type} Mandhi</div>
+                  <div className="mt-1 text-amber-700 font-medium">{r.type}</div>
                   <div className="mt-2 flex items-center gap-3 text-sm">
                     <div className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-amber-50 text-amber-800 dark:bg-amber-500/15 dark:text-amber-200 dark:ring-1 dark:ring-amber-400/40">
                       ⭐ {r.avg_rating.toFixed(1)}
