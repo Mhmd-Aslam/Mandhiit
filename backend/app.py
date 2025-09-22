@@ -2,6 +2,7 @@ from flask import Flask, jsonify
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 import os
+import json
 
 from auth import auth_bp, token_blocklist
 
@@ -41,188 +42,119 @@ except Exception:
     cloudinary = None
     _cloudinary_enabled = False
 
-# Real Mandhi spots in Kottayam district (sourced: Restaurant Guru, Justdial)
-# Sources:
-# - Khaleef Mandi: Restaurant Guru (phone), Justdial (address)
-#   RG: https://restaurant-guru.in/Khaleef-Mandi-Kottayam (phone: +91 89435 89438)
-#   JD: https://www.justdial.com/Kottayam/Khaleef-Mandi-Opposite-Royal-Enfield-Showroom-Kottayam-HO/9999PX481-X481-210810205249-Y1E4_BZDET
-#       Address: Opposite Royal Enfield Showroom, Kumarakom Road, Chalakunnu, Kottayam HO-686001
-# - Al Baike Mandhi Hub (Erattupetta): Justdial
-#   JD: https://www.justdial.com/Kottayam/Al-Baike-Mandhi-Hub-Erattupetta/9999PX481-X481-220414215246-Q7C4_BZDET
-#       Address: Central Junction, 1, Erattupetta-686121
-# - Ajwa Food Park – Kuzhi Manthi @ Erattupetta (Pala Town): Justdial
-#   JD: https://www.justdial.com/Kottayam/Ajwa-Food-Park-Kuzhi-Manthi-Erattupetta-NEAR-COLLEGE-PADI-Pala-Town/9999PX481-X481-191102101002-N3I8_BZDET
-#       Address: NEAR COLLEGE PADI, 6TH MILE, PALA ROAD, Pala Town-686575
-restaurants = [
-    {
-        "id": 1,
-        "name": "Khaleef Mandi",
-        "location": "Chalakunnu, Kottayam",
-        "type": "Mandhi / Arabic",
-        "rating": 4.0,
-        "image": "https://content.jdmagicbox.com/v2/comp/kottayam/e4/9999px481.x481.210810205249.y1e4/catalogue/khaleef-mandi-kottayam-ho-kottayam-arabic-delivery-restaurants-pavm0hack8.jpg?w=640",
-        "description": "Popular spot for chicken and beef Mandhi in Kottayam with generous portions.",
-        "specialties": ["Chicken Mandhi", "Beef Mandhi", "Biryani"],
-        "phone": "+91 89435 89438",
-        "address": "Opposite Royal Enfield Showroom, Kumarakom Road, Chalakunnu, Kottayam HO 686001"
-    },
-    {
-        "id": 2,
-        "name": "Al Baike Mandhi Hub",
-        "location": "Erattupetta, Kottayam",
-        "type": "Mandhi / Arabian",
-        "rating": 4.0,
-        "image": "https://images.unsplash.com/photo-1544025162-d76694265947?w=400",
-        "description": "Mandhi and fried chicken with a clean ambience at Erattupetta Central Junction.",
-        "specialties": ["Chicken Mandhi", "Beef Mandhi", "Fried Chicken"],
-        "phone": "",
-        "address": "Central Junction, 1, Erattupetta 686121"
-    },
-    {
-        "id": 3,
-        "name": "Ajwa Food Park – Kuzhi Manthi",
-        "location": "Pala Town, Kottayam",
-        "type": "Kuzhi Mandhi / Arabian",
-        "rating": 4.2,
-        "image": "https://content.jdmagicbox.com/comp/kottayam/i8/9999px481.x481.191102101002.n3i8/catalogue/ajwa-food-park-kuzhi-manthi-erattupetta-pala-town-kottayam-restaurants-xxtkyczrhy-250.jpg?w=640",
-        "description": "Well-known for flavorful and tender Kuzhi Mandhi with generous portions.",
-        "specialties": ["Kuzhi Mandhi", "Chicken Mandhi"],
-        "phone": "",
-        "address": "NEAR COLLEGE PADI, 6TH MILE, PALA ROAD, Pala Town 686575"
-    },
-    {
-        # Source: Justdial
-        # https://www.justdial.com/Kottayam/Al-Ajmi-Yemen-Mandi-Near-Sh32-Erattupetta/9999PX481-X481-220320202833-Q9R6_BZDET
-        # Address: Kaduvamuzhi, Kerala, Near SH32, Erattupetta 686121
-        "id": 4,
-        "name": "Al Ajmi Yemen Mandi",
-        "location": "Erattupetta, Kottayam",
-        "type": "Yemeni Mandhi / Arabian",
-        "rating": 4.0,
-        "image": "https://content.jdmagicbox.com/comp/kottayam/r6/9999px481.x481.220320202833.q9r6/catalogue/al-ajmi-yemen-mandi-kottayam-restaurants-ks2w8c41vq.jpg?w=640",
-        "description": "Yemeni-style Mandhi near SH32 at Erattupetta; popular local pick.",
-        "specialties": ["Chicken Mandhi", "Mutton Mandhi"],
-        "phone": "",
-        "address": "Kaduvamuzhi, Near SH32, Erattupetta 686121"
-    },
-    {
-        # 5) Al Razi Restaurant — Kanjikuzhi, Kottayam (sources: Justdial, Quickerala, Instagram)
-        "id": 5,
-        "name": "Al Razi Restaurant",
-        "location": "Kanjikuzhi (KK Road), Kottayam",
-        "type": "Kuzhimandhi / Arabian",
-        "rating": 4.1,
-        "image": "https://images.unsplash.com/photo-1604908554233-95e2e2ac43d8?w=640",
-        "description": "Arab/Yemeni-style kuzhimandhi and Al Faham; spacious ambiance; local favorite for chicken mandhi.",
-        "specialties": ["Chicken Kuzhimandhi", "Al Faham", "BBQ Chicken"],
-        "phone": "",
-        "address": "Kanjikuzhi, KK Road area, Kottayam"
-    },
-    {
-        # 6) Malabar Majlis Kuzhimandhi Restaurant — Kodimatha, Kottayam (sources: Zomato, Justdial)
-        "id": 6,
-        "name": "Malabar Majlis Kuzhimandhi Restaurant",
-        "location": "Kodimatha, Kottayam",
-        "type": "Arabian / Mandhi",
-        "rating": 4.0,
-        "image": "https://images.unsplash.com/photo-1544025162-d76694265947?w=640",
-        "description": "Arabian mandhi menu with Al Faham, BBQ manthi, beef manthi; good for delivery & takeaway.",
-        "specialties": ["Al Faham", "BBQ Manthi", "Beef Manthi"],
-        "phone": "",
-        "address": "Kodimatha, Kottayam"
-    },
-    {
-        # 7) Majlis Yemen Mandi — Kuravilangadu, Kottayam (source: Justdial)
-        "id": 7,
-        "name": "Majlis Yemen Mandi",
-        "location": "Kuravilangadu, Kottayam",
-        "type": "Yemeni Mandhi / Arabian",
-        "rating": 4.0,
-        "image": "https://images.unsplash.com/photo-1550547660-d9450f859349?w=640",
-        "description": "Yemen/Arab-style mandhi and grills; popular with many customer reviews.",
-        "specialties": ["Chicken Mandhi", "Mutton Mandhi", "Grilled Platters"],
-        "phone": "",
-        "address": "Kuravilangadu, Kottayam"
-    },
-    {
-        # 8) Barkas Kuzhimanthi — Kothanallur (Kandanattil Building / near PNB, Thoovanissa Jn) (source: Justdial)
-        "id": 8,
-        "name": "Barkas Kuzhimanthi",
-        "location": "Kothanallur, Kottayam",
-        "type": "Kuzhimandhi / Arabian",
-        "rating": 4.0,
-        "image": "https://images.unsplash.com/photo-1544025164-7c40e5a2c9f2?w=640",
-        "description": "Kuzhimandhi-focused outlet; frequently listed among local best mandi spots.",
-        "specialties": ["Chicken Kuzhimandhi", "Beef Kuzhimandhi"],
-        "phone": "",
-        "address": "Kandanattil Building, near Punjab National Bank, Thoovanissa Junction, Kothanallur, Kottayam"
-    },
-    {
-        # 9) Moopans Restaurant — Athirampuzha, Opp. Arcadia Hotel (source: Justdial)
-        "id": 9,
-        "name": "Moopans Restaurant",
-        "location": "Athirampuzha, Kottayam",
-        "type": "Multicuisine + Kuzhimandhi",
-        "rating": 4.0,
-        "image": "https://images.unsplash.com/photo-1562967914-608f82629710?w=640",
-        "description": "Long-standing local restaurant serving kuzhimandhi alongside a broad menu.",
-        "specialties": ["Kuzhimandhi", "Al Faham", "Shawarma"],
-        "phone": "",
-        "address": "Opposite Arcadia Hotel, MC Road, Athirampuzha, Kottayam"
-    },
-    {
-        # 10) Food Book Multicuisine Restaurant — Aruvithura / Erattupetta (source: Justdial)
-        "id": 10,
-        "name": "Food Book Multicuisine Restaurant",
-        "location": "Aruvithura / Erattupetta, Kottayam",
-        "type": "Multicuisine + Kuzhimandhi",
-        "rating": 4.0,
-        "image": "https://images.unsplash.com/photo-1544025166-94f2807cc73b?w=640",
-        "description": "Multicuisine restaurant with kuzhimandhi available; accessible near Central Jn area.",
-        "specialties": ["Kuzhimandhi", "Grilled Chicken"],
-        "phone": "",
-        "address": "Aruvithura / Central Junction area, near St. George Forane Church, Erattupetta, Kottayam"
-    },
-    {
-        # 11) Tamam Kuzhimanthi — Erattupetta / Aruvithura (source: Justdial)
-        "id": 11,
-        "name": "Tamam Kuzhimanthi",
-        "location": "Erattupetta (Aruvithura), Kottayam",
-        "type": "Kuzhimanthi / Mandhi",
-        "rating": 3.9,
-        "image": "https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=640",
-        "description": "Local mandi outlet offering kuzhimanthi and related items; steady local patronage.",
-        "specialties": ["Kuzhimanthi", "Chicken Mandhi"],
-        "phone": "",
-        "address": "Aruvithura / central Erattupetta area, Kottayam"
-    },
-    {
-        # 12) Ikkannte Manthikada (Ikkante Mandhikkada) — Thalayolaparambu (source: Justdial / Instagram)
-        "id": 12,
-        "name": "Ikkannte Manthikada",
-        "location": "Thalayolaparambu, Kottayam",
-        "type": "Kuzhimanthi / Mandhi",
-        "rating": 4.2,
-        "image": "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=640",
-        "description": "Popular local mandi joint near DB College; strong social presence and reviews.",
-        "specialties": ["Kuzhimanthi", "Chicken Mandhi"],
-        "phone": "+91 90740 94186",
-        "address": "Opposite DB College, Vettikkattumukku, Thalayolaparambu, Kottayam"
-    },
-    {
-        # 13) Go Grill – The Chick Workshop — Erattupetta (sources: Restaurant Guru / Instagram / Justdial)
-        "id": 13,
-        "name": "Go Grill – The Chick Workshop",
-        "location": "Kaduvamuzhi, Erattupetta, Kottayam",
-        "type": "Arabian Grills + Mandhi",
-        "rating": 4.2,
-        "image": "https://images.unsplash.com/photo-1550547660-acef4926b7f8?w=640",
-        "description": "Arabian-style grills (Al Faham, kebabs, shawarma plates); known locally; parking available.",
-        "specialties": ["Al Faham", "Shawarma Plates", "Peri-Peri Chicken", "Mandhi"],
-        "phone": "+91 98469 81000",
-        "address": "MQVG+8HP, Opp. RIMS Hospital, Kaduvamuzhi, Erattupetta 686121"
+import random
+
+def build_kerala_mandi_dataset(n: int = 100):
+    districts = {
+        "Thiruvananthapuram": ["Kazhakkoottam", "Thampanoor", "Pattom", "Attingal", "Neyyattinkara"],
+        "Kollam": ["Chinnakada", "Kottarakkara", "Paravur", "Karunagappally"],
+        "Pathanamthitta": ["Adoor", "Ranni", "Thiruvalla"],
+        "Alappuzha": ["Alappuzha Town", "Cherthala", "Kayamkulam"],
+        "Kottayam": ["Kanjikuzhi", "Ettumanoor", "Pala", "Changanassery", "Erattupetta"],
+        "Idukki": ["Thodupuzha", "Kattappana", "Munnar"],
+        "Ernakulam": ["Edappally", "Aluva", "Kakkanad", "Fort Kochi", "Angamaly"],
+        "Thrissur": ["Ollur", "Chalakudy", "Guruvayur", "City"],
+        "Palakkad": ["Palakkad Town", "Ottapalam", "Chittur"],
+        "Malappuram": ["Manjeri", "Perinthalmanna", "Kottakkal", "Tirur"],
+        "Kozhikode": ["Palayam", "Mavoor Road", "Kallayi"],
+        "Wayanad": ["Kalpetta", "Sulthan Bathery"],
+        "Kannur": ["Kannur City", "Thalassery", "Payyannur"],
+        "Kasaragod": ["Kasaragod", "Kanhangad"]
     }
-]
+    types = ["Arabian / Mandhi", "Yemeni / Mandhi", "Kuzhimandhi / Arabian", "Multicuisine + Mandhi"]
+    specs = [
+        ["Chicken Mandhi", "Mutton Mandhi"],
+        ["Chicken Kuzhimandhi", "Al Faham"],
+        ["Beef Mandhi", "BBQ"],
+        ["Kabsa", "Shawarma", "Grills"],
+    ]
+    images = [
+        "https://images.unsplash.com/photo-1550547660-d9450f859349?w=640",
+        "https://images.unsplash.com/photo-1544025164-7c40e5a2c9f2?w=640",
+        "https://images.unsplash.com/photo-1562967914-608f82629710?w=640",
+        "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=640",
+        "https://images.unsplash.com/photo-1604908554233-95e2e2ac43d8?w=640",
+    ]
+    out = []
+    rid = 1
+    # Even distribution across districts
+    while len(out) < n:
+        for dist, areas in districts.items():
+            for area in areas:
+                name_root = random.choice(["Majlis", "Barkas", "Hadramout", "Zam Zam", "Al Taza", "Arab Spice", "Al Razi", "Khaleef", "Go Grill", "Ajwa"]) 
+                name = f"{name_root} Mandi"
+                entry = {
+                    "id": rid,
+                    "name": name,
+                    "location": f"{area}, {dist}",
+                    "type": random.choice(types),
+                    "rating": round(random.uniform(3.8, 4.6), 1),
+                    "image": random.choice(images),
+                    "description": "Popular mandhi spot with aromatic rice and tender meat.",
+                    "specialties": random.choice(specs),
+                    "phone": "N/A",
+                    "address": f"{area}, {dist}, Kerala"
+                }
+                out.append(entry)
+                rid += 1
+                if len(out) >= n:
+                    break
+            if len(out) >= n:
+                break
+    return out
+
+def _valid_restaurants_payload(data):
+    if not isinstance(data, list) or len(data) == 0:
+        return False
+    # require minimal fields on first few
+    for item in data[:5]:
+        if not isinstance(item, dict):
+            return False
+        if not item.get('name') or not item.get('location'):
+            return False
+    return True
+
+# Build dataset: prefer curated JSON if available
+DATA_PATH = os.path.join(os.path.dirname(__file__), 'data', 'restaurants.json')
+restaurants = None
+if os.path.exists(DATA_PATH):
+    try:
+        with open(DATA_PATH, 'r', encoding='utf-8') as f:
+            payload = json.load(f)
+        if _valid_restaurants_payload(payload):
+            restaurants = payload
+        else:
+            print('Curated restaurants.json is empty or invalid; falling back to generated dataset')
+    except Exception as e:
+        print('Failed to load curated restaurants.json, falling back to generator:', e)
+
+if not restaurants:
+    restaurants = build_kerala_mandi_dataset(100)
+
+# Ensure every spot has a photo thumbnail
+DEFAULT_THUMBNAIL = "https://images.unsplash.com/photo-1550547660-d9450f859349?w=640&auto=format&fit=crop&q=60"
+for r in restaurants:
+    if not r.get("image") or not isinstance(r.get("image"), str) or not r.get("image").strip():
+        r["image"] = DEFAULT_THUMBNAIL
+
+# If local mandhi photos exist in frontend/public/images/mandhi, use them sequentially
+LOCAL_MANDHI_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'frontend', 'public', 'images', 'mandhi'))
+local_thumbs = []
+if os.path.isdir(LOCAL_MANDHI_DIR):
+    try:
+        names = sorted(os.listdir(LOCAL_MANDHI_DIR))
+        for nm in names:
+            low = nm.lower()
+            if low.endswith(('.jpg', '.jpeg', '.png', '.webp')):
+                # Public path for CRA
+                local_thumbs.append(f"/images/mandhi/{nm}")
+    except Exception as e:
+        print('Could not list local mandhi images:', e)
+
+if local_thumbs:
+    total = len(local_thumbs)
+    for i, r in enumerate(restaurants):
+        r['image'] = local_thumbs[i % total]
 
 # In-memory reviews store (demo). Replace with DB when ready.
 # Each review: { id, restaurant_id, user_email, user_name, rating (1-5), comment, created_at }
@@ -237,6 +169,13 @@ _next_photo_id = 1
 @app.route('/')
 def home():
     return jsonify({"message": "Welcome to Best Mandhi in Town API"})
+
+@app.route('/api/assets/mandhi-images')
+def list_mandhi_images():
+    """Return the list of available mandhi thumbnail image paths (public URLs).
+    Frontend can use this to assign thumbnails sequentially to avoid consecutive repeats.
+    """
+    return jsonify(local_thumbs)
 
 @app.route('/api/restaurants')
 def get_restaurants():
@@ -286,6 +225,14 @@ def search_restaurants(query):
 from flask import request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from datetime import datetime
+import uuid
+import io
+try:
+    from PIL import Image
+    _pil_enabled = True
+except Exception:
+    Image = None
+    _pil_enabled = False
 
 @app.route('/api/restaurants/<int:restaurant_id>/reviews', methods=['GET'])
 def list_reviews(restaurant_id):
@@ -295,6 +242,162 @@ def list_reviews(restaurant_id):
         return jsonify({"error": "Restaurant not found"}), 404
     data = [r for r in reviews if r["restaurant_id"] == restaurant_id]
     return jsonify(data)
+
+# -----------------------------
+# Simple Accounts (No Auth)
+# -----------------------------
+# Each user: { id (10-digit string), name, avatar_url (optional), created_at }
+users = []
+
+def _generate_user_id() -> str:
+    """Generate a unique 10-digit numeric ID (as a string)."""
+    import random
+    while True:
+        uid = ''.join(str(random.randint(0, 9)) for _ in range(10))
+        if not any(u.get('id') == uid for u in users):
+            return uid
+
+@app.route('/api/accounts', methods=['POST'])
+def create_account():
+    """Create an account with required name and optional avatar upload.
+    Accepts either:
+      - multipart/form-data: fields => name (text, required), avatar (file, optional)
+      - application/json: { name: string, avatar_url?: string }
+    If an avatar file is provided and Pillow is available, performs a center 1:1 crop before upload.
+    Returns 201 with: { id, name, avatar_url, created_at }
+    """
+    name = None
+    avatar_url = None
+
+    if request.content_type and request.content_type.startswith('multipart/'):
+        name = (request.form.get('name') or '').strip()
+        avatar_file = request.files.get('avatar')
+        if avatar_file and getattr(avatar_file, 'filename', ''):
+            # Attempt server-side 1:1 crop if Pillow is available
+            file_to_upload = avatar_file
+            if _pil_enabled:
+                try:
+                    img = Image.open(avatar_file.stream).convert('RGB')
+                    w, h = img.size
+                    side = min(w, h)
+                    left = (w - side) // 2
+                    top = (h - side) // 2
+                    right = left + side
+                    bottom = top + side
+                    img_sq = img.crop((left, top, right, bottom))
+                    buf = io.BytesIO()
+                    img_sq.save(buf, format='JPEG', quality=90)
+                    buf.seek(0)
+                    file_to_upload = buf
+                except Exception as ex:
+                    print('Pillow crop failed, uploading original:', ex)
+                    avatar_file.stream.seek(0)
+                    file_to_upload = avatar_file
+            if _cloudinary_enabled:
+                try:
+                    up = cloudinary.uploader.upload(
+                        file_to_upload,
+                        folder='bmit/users/avatars',
+                        resource_type='image',
+                    )
+                    avatar_url = up.get('secure_url') or up.get('url')
+                except Exception as ex:
+                    print('Cloudinary avatar upload failed:', ex)
+    else:
+        data = request.get_json(silent=True) or {}
+        name = (data.get('name') or '').strip()
+        avatar_url = (data.get('avatar_url') or '').strip() or None
+
+    if not name:
+        return jsonify({"error": "'name' is required"}), 400
+
+    user = {
+        "id": _generate_user_id(),
+        "name": name,
+        "avatar_url": avatar_url,
+        "created_at": datetime.utcnow().isoformat() + "Z",
+    }
+    users.append(user)
+    return jsonify(user), 201
+
+@app.route('/api/accounts/<user_id>', methods=['GET'])
+def get_account(user_id):
+    user = next((u for u in users if u["id"] == user_id), None)
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+    return jsonify(user)
+
+@app.route('/api/accounts/<user_id>/reviews', methods=['GET'])
+def list_user_reviews(user_id):
+    """List reviews written by this account. We match by user_name for the simple demo.
+    Returns newest-first list of reviews.
+    """
+    user = next((u for u in users if u["id"] == user_id), None)
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+    name = user.get('name')
+    data = [r for r in reviews if r.get('user_name') == name]
+    data.sort(key=lambda r: r.get('created_at', ''), reverse=True)
+    return jsonify(data)
+
+@app.route('/api/accounts/<user_id>', methods=['PATCH'])
+def update_account(user_id):
+    """Update an account's name and/or avatar. Accepts multipart/form-data or JSON.
+    Multipart: fields => name? (text), avatar? (file)
+    JSON: { name?: string, avatar_url?: string }
+    Performs 1:1 crop if Pillow is available for file uploads.
+    """
+    user = next((u for u in users if u["id"] == user_id), None)
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+
+    new_name = None
+    new_avatar_url = None
+
+    if request.content_type and request.content_type.startswith('multipart/'):
+        new_name = (request.form.get('name') or '').strip() or None
+        avatar_file = request.files.get('avatar')
+        if avatar_file and getattr(avatar_file, 'filename', ''):
+            file_to_upload = avatar_file
+            if _pil_enabled:
+                try:
+                    img = Image.open(avatar_file.stream).convert('RGB')
+                    w, h = img.size
+                    side = min(w, h)
+                    left = (w - side) // 2
+                    top = (h - side) // 2
+                    right = left + side
+                    bottom = top + side
+                    img_sq = img.crop((left, top, right, bottom))
+                    buf = io.BytesIO()
+                    img_sq.save(buf, format='JPEG', quality=90)
+                    buf.seek(0)
+                    file_to_upload = buf
+                except Exception as ex:
+                    print('Pillow crop failed, uploading original:', ex)
+                    avatar_file.stream.seek(0)
+                    file_to_upload = avatar_file
+            if _cloudinary_enabled:
+                try:
+                    up = cloudinary.uploader.upload(
+                        file_to_upload,
+                        folder='bmit/users/avatars',
+                        resource_type='image',
+                    )
+                    new_avatar_url = up.get('secure_url') or up.get('url')
+                except Exception as ex:
+                    print('Cloudinary avatar upload failed:', ex)
+    else:
+        data = request.get_json(silent=True) or {}
+        new_name = (data.get('name') or '').strip() or None
+        new_avatar_url = (data.get('avatar_url') or '').strip() or None
+
+    if new_name is not None and new_name:
+        user['name'] = new_name
+    if new_avatar_url is not None:
+        user['avatar_url'] = new_avatar_url
+
+    return jsonify(user)
 
 @app.route('/api/restaurants/<int:restaurant_id>/reviews', methods=['POST'])
 @jwt_required()

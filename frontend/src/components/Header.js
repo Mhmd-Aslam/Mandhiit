@@ -1,25 +1,16 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import api from '../services/api';
-import GoogleLoginButton from './GoogleLoginButton';
 // Theme toggle is now handled inside HomePage hero; no need to import here
 
 const Header = () => {
-  const { user, logout, token, setUser, setToken } = useAuth();
+  const { user, logout } = useAuth();
   const [open, setOpen] = useState(false);
 
   const onLogout = async () => {
-    try {
-      if (token) {
-        await api.post('/auth/logout');
-      }
-    } catch (e) {
-      // Ignore network errors on logout
-    } finally {
-      logout();
-      setOpen(false);
-    }
+    // Simple local logout (no backend auth)
+    logout();
+    setOpen(false);
   };
 
   return (
@@ -45,7 +36,9 @@ const Header = () => {
             
             {!user ? (
               <li>
-                <GoogleLoginButton onSuccess={(u, tok) => { setUser(u); setToken(tok); }} />
+                <Link to="/account" className="bg-white text-amber-700 hover:bg-white/90 font-semibold px-3 py-1.5 rounded-md transition">
+                  Account
+                </Link>
               </li>
             ) : (
               <>
@@ -101,9 +94,9 @@ const Header = () => {
               
               {!user ? (
                 <li>
-                  <div className="py-1">
-                    <GoogleLoginButton onSuccess={(u, tok) => { setUser(u); setToken(tok); setOpen(false); }} />
-                  </div>
+                  <Link to="/account" className="block py-1 font-medium rounded-md px-2 hover:bg-white/20 transition-colors text-xs" onClick={() => setOpen(false)}>
+                    Account
+                  </Link>
                 </li>
               ) : (
                 <>

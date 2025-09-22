@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const RestaurantCard = ({ restaurant }) => {
+const RestaurantCard = ({ restaurant, imageSrc }) => {
   const navigate = useNavigate();
   const avg = restaurant.avg_rating ?? restaurant.rating;
   const count = restaurant.review_count ?? 0;
@@ -10,6 +10,12 @@ const RestaurantCard = ({ restaurant }) => {
     navigate(`/restaurant/${restaurant.id}`);
   };
 
+  const DEFAULT_THUMB = 'https://images.unsplash.com/photo-1550547660-d9450f859349?w=640&auto=format&fit=crop&q=60';
+  const [imgSrc, setImgSrc] = useState(imageSrc || restaurant.image || DEFAULT_THUMB);
+  useEffect(() => {
+    setImgSrc(imageSrc || restaurant.image || DEFAULT_THUMB);
+  }, [imageSrc, restaurant.image]);
+
   return (
     <button
       onClick={handleClick}
@@ -17,9 +23,11 @@ const RestaurantCard = ({ restaurant }) => {
     >
       <div className="relative">
         <img
-          src={restaurant.image}
+          src={imgSrc}
           alt={restaurant.name}
-          className="w-full h-48 object-cover"
+          className="w-full h-48 object-cover bg-slate-100 dark:bg-[#262728]"
+          loading="lazy"
+          onError={() => setImgSrc(DEFAULT_THUMB)}
         />
         <div className="absolute top-2 right-2 bg-black/70 text-white text-sm px-2 py-1 rounded-full">
           ⭐ {avg}{count ? ` (${count})` : ''}

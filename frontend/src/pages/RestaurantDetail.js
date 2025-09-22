@@ -21,6 +21,7 @@ const RestaurantDetail = () => {
   const [photos, setPhotos] = useState([]);
   const [files, setFiles] = useState([]); // File[]
   const [previews, setPreviews] = useState([]); // object URLs
+  const [saved, setSaved] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -41,6 +42,32 @@ const RestaurantDetail = () => {
     })();
     return () => { isMounted = false; };
   }, [id]);
+
+  useEffect(() => {
+    // Check saved state for this restaurant for current user
+    try {
+      if (!user?.id || !id) { setSaved(false); return; }
+      const key = `bm_saved_${user.id}`;
+      const ids = JSON.parse(localStorage.getItem(key) || '[]');
+      setSaved(Array.isArray(ids) && ids.includes(Number(id)));
+    } catch { setSaved(false); }
+  }, [user?.id, id]);
+
+  const toggleSave = () => {
+    if (!user) { navigate('/account'); return; }
+    const key = `bm_saved_${user.id}`;
+    const ids = (() => { try { return JSON.parse(localStorage.getItem(key) || '[]'); } catch { return []; } })();
+    let next = Array.isArray(ids) ? ids.slice() : [];
+    const rid = Number(id);
+    if (next.includes(rid)) {
+      next = next.filter((x) => x !== rid);
+      setSaved(false);
+    } else {
+      next.push(rid);
+      setSaved(true);
+    }
+    localStorage.setItem(key, JSON.stringify(next));
+  };
 
   if (loading) {
     return (
@@ -97,19 +124,24 @@ const RestaurantDetail = () => {
                   )}
                 </p>
               </div>
-              <div className="mt-6 flex items-center gap-3">
-                {restaurant.location && (
-                  <a
-                    href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(`${restaurant.name}, ${restaurant.location}`)}`}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="btn-primary inline-flex items-center gap-2"
-                  >
-                    <img src="/maps.png" alt="Google Maps" className="w-4 h-4" />
-                    <span>Directions</span>
-                  </a>
-                )}
-                <button onClick={() => navigate(-1)} className="btn-primary">Back to list</button>
+              <div className="mt-6 flex items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  {restaurant.location && (
+                    <a
+                      href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(`${restaurant.name}, ${restaurant.location}`)}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="btn-primary inline-flex items-center gap-2"
+                    >
+                      <img src="/maps.png" alt="Google Maps" className="w-4 h-4" />
+                      <span>Directions</span>
+                    </a>
+                  )}
+                  <button onClick={toggleSave} className={`px-3 py-2 rounded-md border ${saved ? 'bg-amber-100 text-amber-800 border-amber-300' : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'}`}>
+                    {saved ? 'Saved' : 'Save'}
+                  </button>
+                </div>
+                <button onClick={() => navigate(-1)} className="btn-primary ml-auto">Back to list</button>
               </div>
             </div>
           </div>
